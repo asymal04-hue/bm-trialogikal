@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bahasa Melayu - Pembelajaran Trialogikal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Animasi ringkas */
+    .melompat {
+      animation: lompat 1.5s infinite;
+    }
+    @keyframes lompat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .bergetar:hover {
+      animation: getar 0.3s;
+    }
+    @keyframes getar {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    .kad-animasi:hover {
+      transform: scale(1.05) rotate(1deg);
+      transition: transform 0.3s ease;
+    }
+
+    .dropzone {
+      border: 2px dashed #3b82f6;
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 100px;
+      text-align: center;
+    }
+    .drag-item {
+      cursor: grab;
+    }
+  </style>
+  <script>
+    let skor = 0;
+
+    // Kuiz Ringkas
+    function semakJawapan() {
+      const jawapan = document.getElementById("jawapan").value.toLowerCase();
+      const maklumBalas = document.getElementById("maklumBalas");
+      if (jawapan.includes("kolaborasi")) {
+        maklumBalas.textContent = "🎉 Betul! Pembelajaran Trialogikal menekankan kolaborasi dalam menghasilkan artifak ilmu.";
+        maklumBalas.className = "text-green-600 font-bold";
+        skor += 10;
+      } else {
+        maklumBalas.textContent = "❌ Kurang tepat. Cuba fikirkan tentang konsep kerjasama dalam PdP.";
+        maklumBalas.className = "text-red-600 font-bold";
+        skor -= 5;
+      }
+      kemaskiniSkor();
+    }
+
+    // Ruang Kolaborasi Digital dengan Local Storage
+    function muatkanIdea() {
+      const ideaTersimpan = JSON.parse(localStorage.getItem("senaraiIdea")) || [];
+      const senaraiIdea = document.getElementById("senaraiIdea");
+      senaraiIdea.innerHTML = "";
+      ideaTersimpan.forEach(idea => {
+        const li = document.createElement("li");
+        li.textContent = idea;
+        li.className = "bg-yellow-100 p-2 rounded shadow-sm border-l-4 border-yellow-400";
+        senaraiIdea.appendChild(li);
+      });
+    }
+
+    function tambahIdea() {
+      const inputIdea = document.getElementById("ideaInput");
+      const senaraiIdea = document.getElementById("senaraiIdea");
+      if (inputIdea.value.trim() !== "") {
+        let ideaTersimpan = JSON.parse(localStorage.getItem("senaraiIdea")) || [];
+        ideaTersimpan.push(inputIdea.value);
+        localStorage.setItem("senaraiIdea", JSON.stringify(ideaTersimpan));
+
+        const li = document.createElement("li");
+        li.textContent = inputIdea.value;
+        li.className = "bg-yellow-100 p-2 rounded shadow-sm border-l-4 border-yellow-400";
+        senaraiIdea.appendChild(li);
+
+        inputIdea.value = "";
+      }
+    }
+
+    function padamIdea() {
+      localStorage.removeItem("senaraiIdea");
+      document.getElementById("senaraiIdea").innerHTML = "";
+    }
+
+    // Drag & Drop Latihan Interaktif
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev, kategori) {
+      ev.preventDefault();
+      const data = ev.dataTransfer.getData("text");
+      const elemen = document.getElementById(data);
+      ev.target.appendChild(elemen);
+      alert("👍 Bagus! Anda letakkan item ke dalam kategori " + kategori);
+      skor += 5;
+      kemaskiniSkor();
+    }
+
+    function kemaskiniSkor() {
+      document.getElementById("paparSkor").textContent = "Skor Anda: " + skor;
+    }
+
+    window.onload = () => {
+      muatkanIdea();
+      kemaskiniSkor();
+    }
+  </script>
+</head>
+<body class="bg-gradient-to-br from-pink-100 via-yellow-100 to-blue-100 text-gray-800 font-sans">
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-pink-500 to-yellow-400 text-white p-6 shadow-lg text-center">
+    <div class="flex flex-col items-center">
+      <img src="https://cdn-icons-png.flaticon.com/512/201/201818.png" alt="Maskot Buku" class="w-20 h-20 mb-2 animate-bounce">
+      <h1 class="text-4xl font-extrabold drop-shadow melompat">🌟 Bahasa Melayu 🌟</h1>
+      <p class="text-xl mt-2">Pembelajaran Menyeronokkan dengan Trialogikal</p>
+      <p id="paparSkor" class="mt-2 text-lg font-bold bg-white text-pink-600 px-4 py-2 rounded">Skor Anda: 0</p>
+    </div>
+  </header>
+
+  <!-- Pengenalan -->
+  <section class="p-8 max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl font-bold text-pink-600 mb-4">Pengenalan</h2>
+    <p class="mb-4 text-lg">Kursus Inovasi Digital dalam PdP memperkenalkan konsep <strong class="text-blue-600">Pembelajaran Trialogikal</strong> yang menekankan penggunaan teknologi digital dalam penghasilan artifak ilmu secara kolaboratif. Pendekatan ini memberi tumpuan kepada pembangunan idea, kreativiti dan inovasi dalam proses pengajaran dan pembelajaran.</p>
+  </section>
+
+  <!-- Apa itu Pembelajaran Trialogikal -->
+  <section class="bg-white p-8 max-w-4xl mx-auto shadow-xl rounded-2xl mb-8 border-4 border-yellow-300">
+    <h2 class="text-3xl font-bold text-blue-600 mb-4">Apa Itu Pembelajaran Trialogikal?</h2>
+    <ul class="list-disc pl-6 space-y-3 text-lg">
+      <li>🔍 Mencari, berkongsi dan memperoleh maklumat melalui teknologi digital.</li>
+      <li>🤝 Mewujudkan interaksi sosial, komunikasi dan rangkaian pembelajaran.</li>
+      <li>💡 Menghasilkan produk pengetahuan secara kolaboratif seperti Wikipedia.</li>
+      <li>🎯 Aktiviti pembelajaran berpusatkan objek yang autentik dan berguna.</li>
+    </ul>
+  </section>
+
+  <!-- Objektif -->
+  <section class="p-8 max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl font-bold text-green-600 mb-4">Objektif</h2>
+    <ol class="list-decimal pl-6 space-y-3 text-lg text-left">
+      <li>📱 Menguasai kemahiran teknologi digital dalam PdP.</li>
+      <li>🎨 Menghasilkan bahan pembelajaran kreatif dan inovatif.</li>
+      <li>🤗 Berkolaborasi dalam membina artifak ilmu dan produk pengetahuan.</li>
+    </ol>
+  </section>
+
+  <!-- Contoh Objek -->
+  <section class="bg-blue-200 p-8 max-w-4xl mx-auto rounded-2xl mb-8 border-4 border-pink-300">
+    <h2 class="text-3xl font-bold text-purple-700 mb-4 text-center">Contoh Objek yang Dikongsi</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow-lg border-2 border-yellow-300 text-center kad-animasi">
+        <img src="https://cdn-icons-png.flaticon.com/512/167/167707.png" alt="Artifak Buku" class="w-16 h-16 mx-auto mb-2">
+        <h3 class="font-bold text-pink-600">📚 Artifak Ilmu</h3>
+        <p class="text-sm">Nota, peta minda, atau bahan digital untuk rujukan berulang.</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-lg border-2 border-green-300 text-center kad-animasi">
+        <img src="https://cdn-icons-png.flaticon.com/512/1048/1048949.png" alt="Amalan Model" class="w-16 h-16 mx-auto mb-2">
+        <h3 class="font-bold text-blue-600">🧩 Amalan / Model</h3>
+        <p class="text-sm">Contoh model PdP, strategi kolaboratif, atau perancangan pengajaran.</p>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow-lg border-2 border-purple-300 text-center kad-animasi">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Wiki" class="w-16 h-16 mx-auto mb-2">
+        <h3 class="font-bold text-purple-600">🌐 Halaman Wiki</h3>
+        <p class="text-sm">Platform kolaborasi untuk menulis, berkongsi, dan mengemaskini maklumat.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Aktiviti Interaktif -->
+  <section class="p-8 max-w-4xl mx-auto mb-8 bg-white shadow-xl rounded-2xl border-4 border-green-300">
+    <h2 class="text-3xl font-bold text-orange-500 mb-4 text-center">🎲 Aktiviti Interaktif: Kuiz Ringkas</h2>
+    <p class="mb-2 text-lg">Soalan: Apakah elemen penting dalam Pembelajaran Trialogikal?</p>
+    <input id="jawapan" type="text" placeholder="Tulis jawapan anda di sini..." class="border p-3 rounded w-full mb-4">
+    <button onclick="semakJawapan()" class="bg-pink-500 text-white px-4 py-2 rounded-lg bergetar">Semak Jawapan</button>
+    <p id="maklumBalas" class="mt-4 text-lg"></p>
+  </section>
+
+  <!-- Ruang Kolaborasi Digital -->
+  <section class="p-8 max-w-4xl mx-auto mb-8 bg-yellow-100 rounded-2xl shadow-xl border-4 border-blue-300">
+    <h2 class="text-3xl font-bold text-pink-600 mb-4 text-center">💬 Ruang Kolaborasi Digital</h2>
+    <p class="mb-4 text-lg text-center">Kongsi idea anda bagaimana Pembelajaran Trialogikal boleh diaplikasikan dalam kelas Bahasa Melayu:</p>
+    <div class="flex mb-4">
+      <input id="ideaInput" type="text" placeholder="Kongsi idea anda..." class="border p-3 flex-1 rounded-l-lg">
+      <button onclick="tambahIdea()" class="bg-green-500 text-white px-4 py-2 rounded-r-lg hover:bg-green-700 bergetar">Tambah</button>
+    </div>
+    <ul id="senaraiIdea" class="space-y-2 list-disc pl-6 text-lg"></ul>
+    <button onclick="padamIdea()" class="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 bergetar">Padam Semua Idea</button>
+  </section>
+
+  <!-- Latihan Interaktif Seret & Lepas -->
+  <section class="p-8 max-w-4xl mx-auto mb-8 bg-pink-100 rounded-2xl shadow-xl border-4 border-yellow-400">
+    <h2 class="text-3xl font-bold text-purple-700 mb-4 text-center">🖼️ Latihan Seret & Lepas</h2>
+    <p class="text-lg mb-4 text-center">Seret gambar ke kategori yang betul:</p>
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <h3 class="font-bold text-blue-600 text-center mb-2">Objek Digital</h3>
+        <div id="dropDigital" class="dropzone" ondrop="drop(event, 'Objek Digital')" ondragover="allowDrop(event)"></div>
+      </div>
+      <div>
+        <h3 class="font-bold text-green-600 text-center mb-2">Kolaborasi</h3>
+        <div id="dropKolaborasi" class="dropzone" ondrop="drop(event, 'Kolaborasi')" ondragover="allowDrop(event)"></div>
+      </div>
+    </div>
+    <div class="flex gap-4 justify-center mt-6">
+      <img id="item1" src="https://cdn-icons-png.flaticon.com/512/2995/2995620.png" draggable="true" ondragstart="drag(event)" class="w-16 drag-item">
+      <img id="item2" src="https://cdn-icons-png.flaticon.com/512/1946/1946429.png" draggable="true" ondragstart="drag(event)" class="w-16 drag-item">
+      <img id="item3" src="https://cdn-icons-png.flaticon.com/512/3143/3143643.png" draggable="true" ondragstart="drag(event)" class="w-16 drag-item">
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-yellow-400 to-pink-500 text-white text-center p-6 mt-6 rounded-t-xl">
+    <p class="font-bold mb-4">Muhammad Amirul Asymal bin Hamzah 2025</p>
+    <div class="flex justify-center space-x-6">
+      <a href="#" class="hover:text-blue-200"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" class="w-8 h-8"></a>
+      <a href="#" class="hover:text-blue-200"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="YouTube" class="w-8 h-8"></a>
+      <a href="#" class="hover:text-blue-200"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" class="w-8 h-8"></a>
+    </div>
+  </footer>
+</body>
+</html>
